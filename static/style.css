@@ -1,0 +1,143 @@
+:root {
+    /* Light theme colors tweaked for a more elegant look */
+    --bg: linear-gradient(120deg, #eef2f9 0%, #ffffff 100%);
+    --text-color: #222;
+    --section-bg: rgba(255, 255, 255, 0.9);
+    --button-bg: #4c6ef5;
+    --button-hover: #3b5bdb;
+    --link-color: #1a73e8;
+    --copy-msg-bg: #51cf66;
+    --border-color: #ccc;
+}
+
+[data-theme="dark"] {
+    --bg: linear-gradient(120deg, #24243e 0%, #14163c 100%);
+    --text-color: #eee;
+    --section-bg: rgba(0,0,0,0.5);
+    --button-bg: #0d6efd;
+    --button-hover: #0b5ed7;
+    --link-color: #66b3ff;
+    --copy-msg-bg: #198754;
+    --border-color: #555;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 2rem;
+    position: relative;
+    background: var(--bg);
+    color: var(--text-color);
+}
+
+textarea, input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    font-family: monospace;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#copy-all-btn {
+    margin-top: 0.5rem;
+}
+
+#theme-toggle {
+    margin-bottom: 1rem;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+}
+
+.section {
+    background: var(--section-bg);
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    overflow-x: auto;
+    display: block;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    word-break: break-all;
+}
+
+.step-header {
+    margin-top: 2rem;
+    font-weight: bold;
+}
+
+.copyable {
+    cursor: pointer;
+    color: var(--link-color);
+}
+
+.step-row:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.step-cell:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    background-color: var(--section-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    max-width: 220px;
+    z-index: 10;
+}
+
+#copy-msg {
+    display: none;
+    padding: 0.5rem;
+    background-color: var(--copy-msg-bg);
+    color: white;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    body {
+        margin: 1rem;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .section {
+        padding: 0.75rem;
+    }
+
+    th, td {
+        font-size: 0.8rem;
+    }
+}

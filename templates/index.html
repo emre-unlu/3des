@@ -2,50 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3DES Visual Demonstration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
-            background-color: #f5f5f5;
-        }
-        textarea, input {
-            width: 100%;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            font-family: monospace;
-        }
-        button {
-            padding: 0.5rem 1rem;
-            margin-right: 1rem;
-        }
-        .section {
-            background: white;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        th, td {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            font-size: 0.9rem;
-            word-break: break-all;
-        }
-        .step-header {
-            margin-top: 2rem;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
     <h1>Triple DES (3DES) in CBC Mode — Interactive Demonstration</h1>
+    <button id="theme-toggle">Switch to Light Mode</button>
 
     <div class="section">
         <h2>Encrypt</h2>
@@ -58,25 +22,29 @@
     <div class="section">
         <h2>Decrypt</h2>
         <form method="POST">
-            <textarea name="ciphertext" rows="4" placeholder="Base64 ciphertext..." required></textarea>
-            <input type="text" name="key" placeholder="Base64 key..." required>
-            <input type="text" name="iv" placeholder="Base64 IV..." required>
+            <textarea id="ciphertext-input" name="ciphertext" rows="4" placeholder="Base64 ciphertext..." required></textarea>
+            <input id="key-input" type="text" name="key" placeholder="Base64 key..." required>
+            <input id="iv-input" type="text" name="iv" placeholder="Base64 IV..." required>
             <button type="submit" name="action" value="decrypt">Decrypt</button>
         </form>
     </div>
 
     {% if result %}
-    <div class="section">
+    <div class="section" id="result-section">
         <h2>Result</h2>
+        <div id="copy-msg"></div>
+        <button type="button" id="copy-all-btn">Copy All</button>
         {% if result.error %}
             <p style="color: red;">Error: {{ result.error }}</p>
         {% elif result.mode == 'encrypt' %}
             <p><strong>Original Plaintext:</strong> {{ result.input }}</p>
-            <p><strong>Encrypted (base64):</strong> {{ result.ciphertext }}</p>
-            <p><strong>Key (base64):</strong> {{ result.key }}</p>
-            <p><strong>IV (base64):</strong> {{ result.iv }}</p>
+            <p><strong>Encrypted (base64):</strong> <span id="ciphertext-result" class="copyable">{{ result.ciphertext }}</span></p>
+            <p><strong>Key (base64):</strong> <span id="key-result" class="copyable">{{ result.key }}</span></p>
+            <p><strong>IV (base64):</strong> <span id="iv-result" class="copyable">{{ result.iv }}</span></p>
 
             <h3 class="step-header">Step-by-Step Visualization</h3>
+            <p id="algo-desc">Triple DES encrypts each block three times: DES with key1, DES⁻¹ with key2, and DES with key3. In CBC mode each plaintext block is XORed with the previous ciphertext or the IV.</p>
+            <div id="step-tooltip" class="tooltip"></div>
             <table>
                 <thead>
                     <tr>
@@ -89,23 +57,23 @@
                 </thead>
                 <tbody>
                     {% for step in result.steps %}
-                    <tr>
+                    <tr class="step-row" data-desc="Block {{ loop.index }} processed: XOR with previous ciphertext/IV, then DES(k1), DES⁻¹(k2), DES(k3)">
                         <td>{{ loop.index }}</td>
-                        <td>{{ step.xor_input }}</td>
-                        <td>{{ step.des1 }}</td>
-                        <td>{{ step.des2 }}</td>
-                        <td>{{ step.des3 }}</td>
+                        <td class="step-cell" data-desc="XOR of plaintext block {{ loop.index }} with IV or previous ciphertext">{{ step.xor_input }}</td>
+                        <td class="step-cell" data-desc="Result after encrypting with key1 (DES)">{{ step.des1 }}</td>
+                        <td class="step-cell" data-desc="Result after decrypting with key2 (DES⁻¹)">{{ step.des2 }}</td>
+                        <td class="step-cell" data-desc="Final encryption with key3 (DES) producing ciphertext">{{ step.des3 }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
 
         {% elif result.mode == 'decrypt' %}
-            <p><strong>Decrypted Plaintext:</strong> {{ result.plaintext }}</p>
+            <p><strong>Decrypted Plaintext:</strong> <span class="copyable">{{ result.plaintext }}</span></p>
         {% endif %}
     </div>
     {% endif %}
-
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
 
