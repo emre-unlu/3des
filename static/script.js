@@ -72,4 +72,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    const tooltip = document.getElementById('step-tooltip');
+    document.querySelectorAll('.step-row').forEach(function(row) {
+        row.addEventListener('mouseenter', function() {
+            if (tooltip) {
+                tooltip.textContent = this.dataset.desc;
+                const rect = this.getBoundingClientRect();
+                tooltip.style.left = rect.left + window.scrollX + 'px';
+                tooltip.style.top = rect.bottom + window.scrollY + 'px';
+                tooltip.style.display = 'block';
+            }
+        });
+        row.addEventListener('mouseleave', function() {
+            if (tooltip) {
+                tooltip.style.display = 'none';
+            }
+        });
+    });
 });

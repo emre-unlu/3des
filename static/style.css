@@ -23,6 +23,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 2rem;
+    position: relative;
     background: var(--bg);
     color: var(--text-color);
 }
@@ -89,6 +90,23 @@ th, td {
 .copyable {
     cursor: pointer;
     color: var(--link-color);
+}
+
+.step-row:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    background-color: var(--section-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    max-width: 220px;
+    z-index: 10;
 }
 
 #copy-msg {

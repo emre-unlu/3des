@@ -43,6 +43,8 @@
             <p><strong>IV (base64):</strong> <span id="iv-result" class="copyable">{{ result.iv }}</span></p>
 
             <h3 class="step-header">Step-by-Step Visualization</h3>
+            <p id="algo-desc">Triple DES encrypts each block three times: DES with key1, DES⁻¹ with key2, and DES with key3. In CBC mode each plaintext block is XORed with the previous ciphertext or the IV.</p>
+            <div id="step-tooltip" class="tooltip"></div>
             <table>
                 <thead>
                     <tr>
@@ -55,7 +57,7 @@
                 </thead>
                 <tbody>
                     {% for step in result.steps %}
-                    <tr>
+                    <tr class="step-row" data-desc="Block {{ loop.index }} processed: XOR with previous ciphertext/IV, then DES(k1), DES⁻¹(k2), DES(k3)">
                         <td>{{ loop.index }}</td>
                         <td>{{ step.xor_input }}</td>
                         <td>{{ step.des1 }}</td>
