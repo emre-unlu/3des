@@ -56,9 +56,16 @@ def encrypt_3des_with_steps(plaintext):
 
 # Decrypt ciphertext using 3DES in CBC mode
 def decrypt_3des(ciphertext_b64, key_b64, iv_b64):
-    key = base64.b64decode(key_b64)
-    iv = base64.b64decode(iv_b64)
-    ciphertext = base64.b64decode(ciphertext_b64)
+    # Fail early if the provided data isn't valid base64
+    key = base64.b64decode(key_b64, validate=True)
+    iv = base64.b64decode(iv_b64, validate=True)
+    ciphertext = base64.b64decode(ciphertext_b64, validate=True)
+
+    if len(key) not in (16, 24):
+        raise ValueError('Invalid key length')
+    if len(iv) != 8:
+        raise ValueError('Invalid IV length')
+
     cipher = DES3.new(key, DES3.MODE_CBC, iv)
     decrypted_padded = cipher.decrypt(ciphertext)
     plaintext = unpad(decrypted_padded, DES3.block_size).decode('utf-8')
