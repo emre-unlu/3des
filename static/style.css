@@ -24,6 +24,10 @@ button {
     cursor: pointer;
 }
 
+#copy-all-btn {
+    margin-top: 0.5rem;
+}
+
 button:hover {
     background-color: #45a049;
 }

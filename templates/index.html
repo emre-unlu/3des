@@ -29,9 +29,10 @@
     </div>
 
     {% if result %}
-    <div class="section">
+    <div class="section" id="result-section">
         <h2>Result</h2>
         <div id="copy-msg"></div>
+        <button type="button" id="copy-all-btn">Copy All</button>
         {% if result.error %}
             <p style="color: red;">Error: {{ result.error }}</p>
         {% elif result.mode == 'encrypt' %}

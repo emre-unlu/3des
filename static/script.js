@@ -13,4 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
             copyToClipboard(this.textContent);
         });
     });
+
+    const copyAll = document.getElementById('copy-all-btn');
+    if (copyAll) {
+        copyAll.addEventListener('click', function() {
+            const texts = Array.from(document.querySelectorAll('.copyable'))
+                              .map(el => el.textContent)
+                              .join('\n');
+            if (texts) {
+                copyToClipboard(texts);
+            }
+        });
+    }
 });
