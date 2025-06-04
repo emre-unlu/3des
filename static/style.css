@@ -1,12 +1,13 @@
 :root {
-    --bg: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-    --text-color: #333;
-    --section-bg: rgba(255,255,255,0.85);
-    --button-bg: #4CAF50;
-    --button-hover: #45a049;
-    --link-color: #007bff;
-    --copy-msg-bg: #28a745;
-    --border-color: #ddd;
+    /* Light theme colors tweaked for a more elegant look */
+    --bg: linear-gradient(120deg, #eef2f9 0%, #ffffff 100%);
+    --text-color: #222;
+    --section-bg: rgba(255, 255, 255, 0.9);
+    --button-bg: #4c6ef5;
+    --button-hover: #3b5bdb;
+    --link-color: #1a73e8;
+    --copy-msg-bg: #51cf66;
+    --border-color: #ccc;
 }
 
 [data-theme="dark"] {
