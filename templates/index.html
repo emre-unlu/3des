@@ -59,10 +59,10 @@
                     {% for step in result.steps %}
                     <tr class="step-row" data-desc="Block {{ loop.index }} processed: XOR with previous ciphertext/IV, then DES(k1), DES⁻¹(k2), DES(k3)">
                         <td>{{ loop.index }}</td>
-                        <td>{{ step.xor_input }}</td>
-                        <td>{{ step.des1 }}</td>
-                        <td>{{ step.des2 }}</td>
-                        <td>{{ step.des3 }}</td>
+                        <td class="step-cell" data-desc="XOR of plaintext block {{ loop.index }} with IV or previous ciphertext">{{ step.xor_input }}</td>
+                        <td class="step-cell" data-desc="Result after encrypting with key1 (DES)">{{ step.des1 }}</td>
+                        <td class="step-cell" data-desc="Result after decrypting with key2 (DES⁻¹)">{{ step.des2 }}</td>
+                        <td class="step-cell" data-desc="Final encryption with key3 (DES) producing ciphertext">{{ step.des3 }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

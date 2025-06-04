@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const tooltip = document.getElementById('step-tooltip');
-    document.querySelectorAll('.step-row').forEach(function(row) {
-        row.addEventListener('mouseenter', function() {
+    document.querySelectorAll('[data-desc]').forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
             if (tooltip) {
                 tooltip.textContent = this.dataset.desc;
                 const rect = this.getBoundingClientRect();
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tooltip.style.display = 'block';
             }
         });
-        row.addEventListener('mouseleave', function() {
+        el.addEventListener('mouseleave', function() {
             if (tooltip) {
                 tooltip.style.display = 'none';
             }
