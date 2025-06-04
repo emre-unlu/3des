@@ -3,45 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>3DES Visual Demonstration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
-            background-color: #f5f5f5;
-        }
-        textarea, input {
-            width: 100%;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            font-family: monospace;
-        }
-        button {
-            padding: 0.5rem 1rem;
-            margin-right: 1rem;
-        }
-        .section {
-            background: white;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        th, td {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            font-size: 0.9rem;
-            word-break: break-all;
-        }
-        .step-header {
-            margin-top: 2rem;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
@@ -68,13 +30,14 @@
     {% if result %}
     <div class="section">
         <h2>Result</h2>
+        <div id="copy-msg"></div>
         {% if result.error %}
             <p style="color: red;">Error: {{ result.error }}</p>
         {% elif result.mode == 'encrypt' %}
             <p><strong>Original Plaintext:</strong> {{ result.input }}</p>
-            <p><strong>Encrypted (base64):</strong> {{ result.ciphertext }}</p>
-            <p><strong>Key (base64):</strong> {{ result.key }}</p>
-            <p><strong>IV (base64):</strong> {{ result.iv }}</p>
+            <p><strong>Encrypted (base64):</strong> <span class="copyable">{{ result.ciphertext }}</span></p>
+            <p><strong>Key (base64):</strong> <span class="copyable">{{ result.key }}</span></p>
+            <p><strong>IV (base64):</strong> <span class="copyable">{{ result.iv }}</span></p>
 
             <h3 class="step-header">Step-by-Step Visualization</h3>
             <table>
@@ -101,11 +64,11 @@
             </table>
 
         {% elif result.mode == 'decrypt' %}
-            <p><strong>Decrypted Plaintext:</strong> {{ result.plaintext }}</p>
+            <p><strong>Decrypted Plaintext:</strong> <span class="copyable">{{ result.plaintext }}</span></p>
         {% endif %}
     </div>
     {% endif %}
-
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
 
