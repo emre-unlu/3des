@@ -40,6 +40,8 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    overflow-x: auto;
+    display: block;
 }
 
 th, td {
@@ -66,4 +68,23 @@ th, td {
     color: white;
     margin-bottom: 1rem;
     border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    body {
+        margin: 1rem;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .section {
+        padding: 0.75rem;
+    }
+
+    th, td {
+        font-size: 0.8rem;
+    }
 }
