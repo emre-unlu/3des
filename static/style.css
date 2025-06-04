@@ -1,8 +1,30 @@
+:root {
+    --bg: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    --text-color: #333;
+    --section-bg: rgba(255,255,255,0.85);
+    --button-bg: #4CAF50;
+    --button-hover: #45a049;
+    --link-color: #007bff;
+    --copy-msg-bg: #28a745;
+    --border-color: #ddd;
+}
+
+[data-theme="dark"] {
+    --bg: linear-gradient(120deg, #24243e 0%, #14163c 100%);
+    --text-color: #eee;
+    --section-bg: rgba(0,0,0,0.5);
+    --button-bg: #0d6efd;
+    --button-hover: #0b5ed7;
+    --link-color: #66b3ff;
+    --copy-msg-bg: #198754;
+    --border-color: #555;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 2rem;
-    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-    color: #333;
+    background: var(--bg);
+    color: var(--text-color);
 }
 
 textarea, input {
@@ -10,14 +32,14 @@ textarea, input {
     padding: 0.5rem;
     margin-bottom: 1rem;
     font-family: monospace;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
 }
 
 button {
     padding: 0.5rem 1rem;
     margin-right: 1rem;
-    background-color: #4CAF50;
+    background-color: var(--button-bg);
     color: white;
     border: none;
     border-radius: 4px;
@@ -28,12 +50,16 @@ button {
     margin-top: 0.5rem;
 }
 
+#theme-toggle {
+    margin-bottom: 1rem;
+}
+
 button:hover {
-    background-color: #45a049;
+    background-color: var(--button-hover);
 }
 
 .section {
-    background: white;
+    background: var(--section-bg);
     padding: 1rem;
     margin-bottom: 2rem;
     border-radius: 8px;
@@ -50,7 +76,7 @@ table {
 
 th, td {
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     font-size: 0.9rem;
     word-break: break-all;
 }
@@ -62,13 +88,13 @@ th, td {
 
 .copyable {
     cursor: pointer;
-    color: #007bff;
+    color: var(--link-color);
 }
 
 #copy-msg {
     display: none;
     padding: 0.5rem;
-    background-color: #28a745;
+    background-color: var(--copy-msg-bg);
     color: white;
     margin-bottom: 1rem;
     border-radius: 4px;
