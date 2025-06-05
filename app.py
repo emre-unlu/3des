@@ -5,6 +5,19 @@ from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Cipher.DES3 import adjust_key_parity
 import base64
+import binascii
+
+
+def encode_data(data: bytes, fmt: str) -> str:
+    if fmt == 'hex':
+        return data.hex()
+    return base64.b64encode(data).decode('utf-8')
+
+
+def decode_data(data_str: str, fmt: str) -> bytes:
+    if fmt == 'hex':
+        return bytes.fromhex(data_str)
+    return base64.b64decode(data_str)
 
 app = Flask(__name__)
 
@@ -19,7 +32,7 @@ def generate_3des_key():
             continue
 
 # Encrypt plaintext using 3DES in CBC mode with step tracking
-def encrypt_3des_with_steps(plaintext):
+def encrypt_3des_with_steps(plaintext, out_format: str = 'base64'):
     key = generate_3des_key()
     iv = get_random_bytes(8)
     cipher = DES3.new(key, DES3.MODE_CBC, iv)
@@ -33,32 +46,32 @@ def encrypt_3des_with_steps(plaintext):
     for block in blocks:
         step = {}
         xor_input = bytes(a ^ b for a, b in zip(block, prev))
-        step['xor_input'] = base64.b64encode(xor_input).decode('utf-8')
+        step['xor_input'] = encode_data(xor_input, out_format)
 
         c1 = DES.new(key[:8], DES.MODE_ECB).encrypt(xor_input)
-        step['des1'] = base64.b64encode(c1).decode('utf-8')
+        step['des1'] = encode_data(c1, out_format)
 
         c2 = DES.new(key[8:16], DES.MODE_ECB).decrypt(c1)
-        step['des2'] = base64.b64encode(c2).decode('utf-8')
+        step['des2'] = encode_data(c2, out_format)
 
         c3 = DES.new(key[16:24], DES.MODE_ECB).encrypt(c2)
-        step['des3'] = base64.b64encode(c3).decode('utf-8')
+        step['des3'] = encode_data(c3, out_format)
 
         prev = c3
         steps.append(step)
 
     return {
-        'ciphertext': base64.b64encode(ciphertext).decode('utf-8'),
-        'key': base64.b64encode(key).decode('utf-8'),
-        'iv': base64.b64encode(iv).decode('utf-8'),
+        'ciphertext': encode_data(ciphertext, out_format),
+        'key': encode_data(key, out_format),
+        'iv': encode_data(iv, out_format),
         'steps': steps
     }
 
 # Decrypt ciphertext using 3DES in CBC mode
-def decrypt_3des(ciphertext_b64, key_b64, iv_b64):
-    key = base64.b64decode(key_b64)
-    iv = base64.b64decode(iv_b64)
-    ciphertext = base64.b64decode(ciphertext_b64)
+def decrypt_3des(ciphertext_str, key_str, iv_str, in_format: str = 'base64'):
+    key = decode_data(key_str, in_format)
+    iv = decode_data(iv_str, in_format)
+    ciphertext = decode_data(ciphertext_str, in_format)
     cipher = DES3.new(key, DES3.MODE_CBC, iv)
     decrypted_padded = cipher.decrypt(ciphertext)
     plaintext = unpad(decrypted_padded, DES3.block_size).decode('utf-8')
@@ -71,21 +84,25 @@ def index():
         action = request.form.get('action')
         if action == 'encrypt':
             plaintext = request.form.get('plaintext')
-            result = encrypt_3des_with_steps(plaintext)
+            out_fmt = request.form.get('enc_format', 'base64')
+            result = encrypt_3des_with_steps(plaintext, out_fmt)
             result['mode'] = 'encrypt'
             result['input'] = plaintext
+            result['fmt'] = out_fmt
         elif action == 'decrypt':
             ciphertext = request.form.get('ciphertext')
             key = request.form.get('key')
             iv = request.form.get('iv')
+            in_fmt = request.form.get('dec_format', 'base64')
             try:
-                plaintext = decrypt_3des(ciphertext, key, iv)
+                plaintext = decrypt_3des(ciphertext, key, iv, in_fmt)
                 result = {
                     'mode': 'decrypt',
                     'input': ciphertext,
                     'key': key,
                     'iv': iv,
-                    'plaintext': plaintext
+                    'plaintext': plaintext,
+                    'fmt': in_fmt
                 }
             except Exception as e:
                 result = {'error': str(e)}
