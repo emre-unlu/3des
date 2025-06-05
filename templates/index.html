@@ -15,6 +15,12 @@
         <h2>Encrypt</h2>
         <form method="POST">
             <textarea name="plaintext" rows="4" placeholder="Enter plaintext here..." required>{{ result.input if result and result.mode == 'encrypt' }}</textarea>
+            <label>Output Format:
+                <select name="enc_format">
+                    <option value="base64">Base64</option>
+                    <option value="hex">Hex</option>
+                </select>
+            </label>
             <button type="submit" name="action" value="encrypt">Encrypt</button>
         </form>
     </div>
@@ -22,9 +28,15 @@
     <div class="section">
         <h2>Decrypt</h2>
         <form method="POST">
-            <textarea id="ciphertext-input" name="ciphertext" rows="4" placeholder="Base64 ciphertext..." required></textarea>
-            <input id="key-input" type="text" name="key" placeholder="Base64 key..." required>
-            <input id="iv-input" type="text" name="iv" placeholder="Base64 IV..." required>
+            <textarea id="ciphertext-input" name="ciphertext" rows="4" placeholder="Ciphertext..." required></textarea>
+            <input id="key-input" type="text" name="key" placeholder="Key..." required>
+            <input id="iv-input" type="text" name="iv" placeholder="IV..." required>
+            <label>Input Format:
+                <select name="dec_format">
+                    <option value="base64">Base64</option>
+                    <option value="hex">Hex</option>
+                </select>
+            </label>
             <button type="submit" name="action" value="decrypt">Decrypt</button>
         </form>
     </div>
@@ -38,9 +50,9 @@
             <p style="color: red;">Error: {{ result.error }}</p>
         {% elif result.mode == 'encrypt' %}
             <p><strong>Original Plaintext:</strong> {{ result.input }}</p>
-            <p><strong>Encrypted (base64):</strong> <span id="ciphertext-result" class="copyable">{{ result.ciphertext }}</span></p>
-            <p><strong>Key (base64):</strong> <span id="key-result" class="copyable">{{ result.key }}</span></p>
-            <p><strong>IV (base64):</strong> <span id="iv-result" class="copyable">{{ result.iv }}</span></p>
+            <p><strong>Encrypted ({{ result.fmt }}):</strong> <span id="ciphertext-result" class="copyable">{{ result.ciphertext }}</span></p>
+            <p><strong>Key ({{ result.fmt }}):</strong> <span id="key-result" class="copyable">{{ result.key }}</span></p>
+            <p><strong>IV ({{ result.fmt }}):</strong> <span id="iv-result" class="copyable">{{ result.iv }}</span></p>
 
             <h3 class="step-header">Step-by-Step Visualization</h3>
             <p id="algo-desc">Triple DES encrypts each block three times: DES with key1, DES⁻¹ with key2, and DES with key3. In CBC mode each plaintext block is XORed with the previous ciphertext or the IV.</p>
